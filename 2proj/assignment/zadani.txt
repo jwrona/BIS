@@ -1,0 +1,51 @@
+Zadání projektu
+Na serveru s IP adresou ptest6.local umístěným ve virtuální síti bis.fit.vutbr.cz běží webová aplikace, s autentizací uživatelským jménem a heslem. Webová aplikace vynucuje šifrovanou komunikaci (protokol HTTPS - standardně na portu 443). Na serveru dále běží knihovna OpenSSL 1.0.1e-fips 11 Feb 2013 která zajišťuje zmíněnou šifrovanou komunikaci mezi uživatelem a serverem.
+Vaším úkolem je vytvořit program v jazyce Python, který dokáže získat validní přihlašovací údaje uživatelů, kteří se přihlašují do webové aplikace na zranitelném serveru. Berte v potaz, že uživatelé občas zadávají i chybné přihlašovací údaje (např. překlep). V rámci hodnocení jsou akceptovány pouze validní přihlašovací údaje.
+Programové řešení
+Program musí v rámci webové aplikace na serveru 192.168.122.211 fungovat univerzálně. Při hodnocení budou na serveru odlišní uživatelé (samozřejmě i jejich hesla). Program musí být možné interpretovat na studentském virtuálním stroji, který jste využívali při řešení prvního projektu.
+Na Vašich virutálních strojích není možné instalovat žádné další pomocné knihovny. Povolený je tedy pouze Python v2.6.6 a aktuálně nainstalované knihovny.
+
+Synopsis
+vas_login.py HOST [OPTIONS]
+
+    HOST
+        povinný parametr, představuje hostname popř. IP adresu serveru, na který útočíte
+        v případě, že nejsou zadány jiné OPTIONS (výjma [-p PORT], kterým můžete definovat nestandardní port - např. v případě tunelování), program bude vypisovat informace o zranitelnosti zvoleného serveru ve formátu:
+            vulnerable:yes v případě, že je server zranitelný
+            vulnerable:no v případě, že je server zranitelný není
+        v síti bis.fit.vutbr.cz běží ještě jeden stroj na IP adrese ptest5, který danou zranitelností netrpí (má novější verzi OpenSSL knihovny) - vhodné pro ověření správné funkčnosti Vašeho programu
+    OPTIONS
+        [-p PORT] - volitelný parametr, kde PORT představuje číslo portu, na který útočíte, při neuvedení parametru musí program pracovat na defaultním portu 443
+        [-l] - vypíše validní přihlašovací údaje na STDOUT k aplikaci běžící na zranitelném serveru na zvoleném portu, formát výstupu programu je následující: username:LieutenantRiker;password:Grw789.Dq/4aVq. Pokud odhalíte více validních přihlašovacích údajů, vypište první nalezený a program ukončete.
+        [-h] - vypíše nápovědu k programu na STDOUT, musí být spuštěn samostatně bez ostatních parametrů, stejně tak bude vypsána při chybné kombinaci/chybného zadání parametrů
+
+Příklad spuštění
+Vypíše validní přihlašovací údaje:
+
+    $python vas_login.py ptest6.local -p 443 -l
+
+Doporučení
+Protunelujte příslušnou službu až na svoji pracovní stanici, kde si budete moci zobrazit webovou aplikaci a také ji prozkoumat. Zaměřte se na parametry, které se na server odesílají v rámci autentizace. Pokud budete na projektu pracovat mimo fakultu, doporučuji předně připojení do školní sítě přes VPN. Pokud se Vám podaří získat přihlašovací údaje, manuálně otestujte přihlášení a sledujte, jak se aplikace chová v případě odeslání chybných a validních přihlašovacích údajů. Při automatickém ověření přihlašovacích údajů se po úspěšné autentizaci nezapomeňte z webové aplikace odhlásit, aby byla zrušena SESSION. V jiném případě Vám opětovný požadavek na autentizaci nebude fungovat.
+Dokumentace
+Doporučený rozsah je 1 strana textu, obsah nesmí přesáhnout 2 strany textu. Není třeba přikládat úvodní stránku s logem fakulty. Dokumentace by měla obsahovat:
+
+    popis a princip zranitelnosti (můžete přidat jednoduchý diagram principu útoku)
+    popis tunelování služby až na Vaši pracovní stanici (zmiňte všechny volané příkazy + můžete doplnit jednoduchý diagram propojení mezi hosty a vstupní/výstupní porty), dále vypiště proměnné, které jsou určeny pro autentizaci
+    jak jste postupovali a jakým principem pracuje Váš program při ověření, zda daný server trpí příslušnou zranitelností
+    popis, postup a princip funkčnosti Vašeho programu, při získání přístupových údajů
+    princip, jakým Váš program validuje přístupové údaje
+
+Hodnocení
+Bodový zisk z projektu je rozdělen na 3 části:
+
+    Odhalení zranitelnosti serveru (vulnerability) = 1b
+    Dokumentace = 2b
+    Získání validních přístupových údajů = 4b
+
+Celkově je tedy možné získat za projekt až 7b. U programového řešení se nebude hodnotit jen funkčnost programu, ale i kvalita kódu, komentáře tak i funkčnost nápovědy. U dokumentace kvalita zpracování, gramatika a pravopisné chyby. Dokumentaci je možné odevzdávat v jazycích: čeština, slovenština, angličtina. Za prohřešky budou poměrově odečítány body z výsledného hodnocení.
+Odevzdání
+Projekt odevzdávejte do informačního systému WIS. Formát odevzdání je standardně vas_login.zip (př. xskywa00.zip). ZIP archiv bude obsahovat:
+
+    vas_login.py (python skript s Vaším programovým řešením)
+    dokumentace.pdf
+
